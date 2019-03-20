@@ -1,0 +1,9 @@
+Hibernate defines different states and state transitions for a persistent object in its lifecycle in relation to the Session persistence context. The different states of a persistent object are as follows:
+
+Transient State: A newly created object which is not associated with a persistence context.
+
+Persistent State: An entity instance with a row representation in the database and it is currently associated with a persistence context.
+
+Detached State: An entity instance with or without a row identity in the database and which is no longer associated with a persistence context, usually because the persistence context was closed or the instance was evicted from the context.
+
+Removed State: An entity instance with a row identity in the database and associated with a persistence context, but scheduled for removal from the database.
