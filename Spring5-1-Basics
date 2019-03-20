@@ -1,0 +1,65 @@
+Spring Framework is an open source Java application development framework which supports developing all types of Java applications such as enterprise applications, web applications, cloud based applications and many more.
+
+Java applications developed using Spring are simple, easily testable, reusable and maintainable.
+
+Spring modules does not have tight coupling on each other, developer can pick and choose the modules as per the need for building an enterprise application.
+------------------------------------------------------
+
+Spring Framework 5.x has the following key module groups:
+
+Core Container: These are core modules which provide key features of Spring framework
+
+Data Access/Integration: These modules support JDBC and ORM data access approaches in Spring applications .
+
+Web: These modules provide support to implement web applications
+
+Others: Spring also provides few other modules such as test for testing Spring applications
+------------------------------------------------------
+
+Core container has following modules:
+Core: This is the key module of Spring Framework which provides fundamental support on which all other modules of framework are dependent.
+
+Bean: This module provide basic Spring container called BeanFactory. 
+
+Context: This module provides one more Spring container called ApplicationContext which inherits the basic features of BeanFactory container and also provides additional features to support enterprise application development. 
+
+------------------------------------------------------
+
+Spring Features:
+
+
+Light Weight
+--------------
+
+Spring JARs are relatively small
+
+A basic Spring framework would be lesser than 10MB
+
+Can be deployed in Tomcat and they do not require heavy-weight application servers
+
+Non-Invasive
+--------------
+
+Application are developed using POJOs
+
+No need to extend /implement any pre-defined classes
+
+Loosely Coupled
+--------------
+
+Spring features like Dependency Injection and Aspect Oriented Programming help in loosely coupled code.
+
+Inversion of Control(IoC)
+-------------------------
+
+IoC takes care of application objects life cycle along with their dependencies 
+
+Spring Container
+--------------
+
+Spring Container takes care of object creation, initialization and managing object dependencies.
+
+Aspect Oriented programming(AOP)
+------------------------------
+
+Promotes separation of supporting functions(concerns) such as logging, transaction and security from the core business logic of the application.
