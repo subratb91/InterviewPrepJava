@@ -1,0 +1,89 @@
+After creating the entity classes the next step is to configure Hibernate. For configuring Hibernate we will configure following three beans in Spring configuration file:
+
+1. DataSource
+
+Spring uses DataSource bean object  for establishing a connection to the database. It is an interface and has multiple implementations such as Apache Jakarta Commons DBCP and C3P0. In this course, we study BasicDataSource implementation provided by Jakarta Commons DBCP.
+
+2. SessionFactory
+
+SessionFactory bean object is used by Spring to get instances of Session. Spring uses the LocalSessionFactoryBean utility class to create a SessionFactory bean. This bean requires the DataSource used by the application, the package where the entity classes can be found, and the hibernate properties as parameters.
+
+3.  PlatformTransactionManager
+
+Spring uses PlatformTransactionManager bean for transaction management. This interface is the core of Spring transaction management. Any transaction manager provider framework implements this interface. The most common transaction management providers are DataSourceTransactionManager, HibernateTransactionManager, JpaTransactionManager, JtaTransactionManager etc. In this course, we will study about HibernateTransactionManager. 
+
+
+-----------------------------------------------------------------------------------------------------------------------------------
+@Configuration
+@EnableAspectJAutoProxy
+@EnableTransactionManagement
+@ComponentScan(basePackages = "com.infy.dao com.infy.service com.infy.utility")
+public class SpringConfig {
+    @Bean
+    public DataSource dataSource() {
+        BasicDataSource dataSource = new BasicDataSource();
+        dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
+        dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:xe");
+        dataSource.setUsername("system");
+        dataSource.setPassword("oracle");
+        return dataSource;
+    }
+    @Bean
+    public LocalSessionFactoryBean getSessionFactory(DataSource dataSource) {
+        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+        sessionFactoryBean.setDataSource(dataSource);
+        sessionFactoryBean.setPackagesToScan("com.infy.entity");
+        Properties hibernateProperties = new Properties();
+        hibernateProperties.setProperty("hibernate.dialect","org.hibernate.dialect.Oracle10gDialect");
+        hibernateProperties.setProperty("hibernate.show_sql", "true");
+        hibernateProperties.setProperty("hibernate.format_sql", "false");
+        sessionFactoryBean.setHibernateProperties(hibernateProperties);
+        return sessionFactoryBean;
+    }
+    @Bean
+    public PlatformTransactionManager transactionManager(SessionFactory sessionFactory, DataSource dataSource) {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory);
+        transactionManager.setDataSource(dataSource);
+        return transactionManager;
+    }
+}
+-----------------------------------------------------------------------------------------
+@Transactional(readOnly = true)
+@Service(value = "customerservice")
+public class CustomerServiceImpl implements CustomerService {
+       @Autowired
+       private CustomerDao customerDao;
+       //rest of the code
+}
+-----------------------------------------------------------------------------------------
+public interface CustomerDAO {
+    public Customer getCustomer(Integer customerId) throws Exception;
+    public Integer addCustomer(Customer customer) throws Exception;
+    public void updateCustomer(Customer customer) throws Exception;
+    public void deleteCustomer(Integer id) throws Exception;
+}
+
+@Repository(value = "customerDao")
+public class CustomerDAOImpl implements CustomerDAO {
+	@Autowired
+	SessionFactory sessionFactory;
+	// fetches the customer details of a particular customer
+	public Customer getCustomer(Integer customerId) throws Exception {
+		// Rest of the code goes here
+	}
+	// adds a new customer
+	public Integer addCustomer(Customer customer)throws Exception {
+		// Rest of the code goes here
+	}
+	// updates the address and contactNumber of a particular customer
+	public void updateCustomer(Customer customer) throws Exception {
+		// Rest of the code goes here	
+	}
+	// deletes the given customer
+	public void deleteCustomer(Integer id) throws Exception {
+		// Rest of the code goes here
+	}
+}
+
+-----------------------------------------------------------------------------------------------------------------------------------
