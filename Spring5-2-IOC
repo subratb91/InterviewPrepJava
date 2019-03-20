@@ -1,0 +1,69 @@
+Inversion of Control (IoC) helps in creating a more loosely coupled application. IoC represents the inversion of the responsibility of application object's creation, initialization and destruction from the application to the third party such as framework. Now the third party takes care of application object management and dependencies there by making an application easy to maintain, test and reuse.
+
+There are many approaches to implement IoC, Spring Framework provides IoC implementation using Dependency Injection(DI).
+------------------------------------------------------------------------------------
+Spring container managed application objects are called beans in Spring.
+
+We need not create objects in depenedency injection instead describe how objects should be created through configuration.
+
+DI is a software design pattern that provides better software design to facilitate loose coupling, reuse and ease of testing.
+
+Benefits of Dependency Injection(DI):
+------------------------------------
+
+Helps to create loosely coupled application architecture facilitating re-usability and easy testing.
+
+Separation of responsibility by keeping code and configuration separately. Hence dependencies can be easily modified using configuration without changing the code.
+
+Allows to replace actual objects with mock objects for testing, this improves testability by writing simple JUnit tests that use mock objects.
+
+------------------------------------------------------------------------------------
+
+The core container module of Spring framework provide IoC using Dependency Injection.  
+
+The Spring container knows which objects to create and when to create through the additional details that we provide in our application called Configuration Metadata.
+1. Application logic is provided through POJO classes
+
+2. Configuration metadata consists of bean definitions that the container must manage
+
+3. IoC container produces objects required by the application using POJO classes and configuration metadata. IoC container is of two types – BeanFactory and ApplicationContext.
+
+------------------------------------------------------------------------------------
+
+Spring provides two types of containers :
+
+BeanFactory
+-----------
+
+* It is the basic Spring container with features to instantiate, configure and manage the beans. 
+
+* org.springframework.beans.factory.BeanFactory is the main interface representing a BeanFactory container.
+* Does not support annotation based Dependency Injection.
+* Does not support enterprise services
+* By default it support Lazy Loading
+
+// Loading BeanFactory
+BeanFactory factory = new ClassPathXmlApplicationContext (“config.xml”);   
+
+// Instantiating bean during first access using getBean()
+ReportService reportService = factory.getBean(”reportService”); 
+----------------------------------------
+ApplicationContext
+------------------
+
+* ApplicationContext is one more Spring container which is more commonly used in Spring applications. 
+
+* org.springframework.context.ApplicationContext is the main Interface representing a ApplicationContext container. 
+
+* It inherits the BeanFactory features and provides added features to support enterprise services such as internationalization, validation etc.
+
+* Support annotation based Dependency Injection.
+* Support enterprise services such as validations, internationalization etc.
+* By default it support Eager Loading.Beans are instantiated during load time
+
+// Loading ApplicationContext and instantiating bean
+ApplicationContext context = new ClassPathXmlApplicationContext(“config.xml”);
+
+* ApplicationContext is the preferred container for Spring application development. Let us look at more details on ApplicationContext container.
+
+------------------------------------------------------------------------------------
