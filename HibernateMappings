@@ -1,0 +1,136 @@
+------------ OneToOne Mapping ------------
+As CUSTOMER table has the foreign key column LockerId which references the primary key of LOCKER table, you have to consider the entity of CUSTOMER table as source and LOCKER as the target. Source entity is associated with the target entity, to map the foreign key column. Hence, the CustomerEntity class has an instance of LockerEntity.
+
+@Entity
+@Table(name = "customer")
+public class CustomerEntity {
+    @Id
+    private Integer customerId;
+    private String customerName;
+    private LocalDate dateOfBirth;
+    private String address;
+    @Column(name="phoneNumber")
+    private Long contactNumber;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "lockerId", unique = true)
+    private LockerEntity locker;
+	
+	//generate getters and setters
+}
+
+@Entity
+@Table(name="locker")
+public class LockerEntity {
+	@Id
+	private String lockerId;
+	private String lockerType;
+	private Double rent;
+	
+	//generate getters and setters
+}
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+------------ OneToMany Mapping ------------
+You can see one customer can avail many lockers, so CustomerEntity is used as source entity and the LockerEntity is used as target entity.
+
+@Entity
+@Table(name="Customer")
+public class CustomerEntity {
+    @Id
+    private Integer customerId;
+    private String customerName;
+    private LocalDate dateOfBirth;
+    private String address;
+    @Column(name="phoneNumber")
+    private Long contactNumber;
+    
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinTable(name="CustomerLocker",
+    joinColumns=@JoinColumn(name="customerId", referencedColumnName="customerId"),
+    inverseJoinColumns=@JoinColumn(name="lockerId", referencedColumnName="lockerId",unique=true))
+    private List<LockerEntity> locker;
+	
+    //getters and setters
+}
+
+The unique attribute assures unique values in the inverse join column to achieve one-to-many mapping.
+
+@Entity
+@Table(name="Locker")
+public class LockerEntity {
+    @Id
+    private String lockerId;
+    private String lockerType;
+    private Double rent;
+	
+	//getters and setters
+}
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+------------ ManyToOne Mapping ------------
+As ACCOUNT table has the foreign key column customerId which references the primary key of the CUSTOMER table, you have to consider the entity of ACCOUNT table as source and CUSTOMER as the target. Source entity is associated with the target entity, to map the foreign key column. Hence the AccountEntity class declares the customer property which is an instance of CustomerEntity.
+
+@Entity
+@Table(name="account")
+public class AccountEntity {
+    @Id
+    private Long accountNo;
+    private String accountType;
+    private LocalDate openingDate;
+    private Double balance;
+    private String accountStatus;
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name="customerId")
+    private CustomerEntity customer;
+    //getter and setters
+}
+
+@Entity
+@Table(name = "customer")
+public class CustomerEntity {
+    @Id
+    private Integer customerId;
+    private String customerName;
+    private LocalDate dateOfBirth;
+    private String address;
+    @Column(name = "phoneNumber")
+    private Long contactNumber;
+    //getter and setters
+}
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+------------ ManyToMany Mapping ------------
+In the ManyToMany mapping, you can use either of the entities as source entity and the remaining as target entity. In the given scenario we are using CustomerEntity as source and LoanEntity as the target.
+
+@Entity
+@Table(name = "customer")
+public class CustomerEntity {
+    @Id
+    private Integer customerId;
+    private String customerName;
+    private LocalDate dateOfBirth;
+    private String address;
+    @Column(name="phoneNumber")
+    private Long contactNumber;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "customerLoan",
+    joinColumns = @JoinColumn(name = "customerId", referencedColumnName = "customerId"),      
+    inverseJoinColumns = @JoinColumn(name = "loanId", referencedColumnName = "loanId"))
+    private List<LoanEntity> loans;
+	
+	//getters and setters
+}
+
+@Entity(name="loan")
+public class LoanEntity {
+	@Id
+	private String loanId;
+	private String loanName;
+	private Float rateOfInterest;
+	
+	//getters and setters
+}
