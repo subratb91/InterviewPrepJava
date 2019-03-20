@@ -1,0 +1,54 @@
+---------------------------------------------------------------------------------------------------------------
+<bean id = "reportService" class="com.demo.service.ReportService" >
+
+same as
+
+ReportService reportService = new ReportService();
+
+* How do we initialize bean with some specific values in Spring?
+Inversion of Control pattern is achieved through Dependency Injection (DI) in Spring. In Dependency Injection, developer need not create the objects but specify how they should be created through configuration.
+
+* Spring container uses one of these two ways to initialize the properties:
+Constructor Injection: This is achieved when the container invokes parameterized constructor to initialize the properties of a class.
+Setter Injection: This is achieved when the container invokes setter methods of a class to initialize the properties after invoking a default construct.
+
+
+Constructor Injection :
+-----------------------
+package com.demo.service;
+public class ReportService {
+    private int recordsPerPage;
+    public ReportService(int recordsPerPage) {
+                this.recordsPerPage = recordsPerPage;
+        }
+}
+<bean id = "reportService" class = "com.demo.service.ReportService" >
+      <constructor-arg value = "150"/>      
+</bean>
+
+What is mandatory for constructor injection?
+# Parameterized constructor is required in the ReportService class as we are injecting the values through the constructor argument
+# constructor-arg tag in the bean definition
+
+Eg.
+
+package com.demo.service;
+public class ReportService {   
+    /** The properties. */
+    private int recordsPerPage ;
+    private int totalRecords;
+  
+   public ReportService(int recordsPerPage,  int totalRecords) {
+          this.recordsPerPage = recordsPerPage;
+          this.totalRecords = totalRecords;
+    }
+    ...
+}
+<bean id="reportService" class="com.demo.service.ReportService" >
+      <constructor-arg value="100" />
+      <constructor-arg value="500" />
+</bean>
+
+Here first value "100" is passed to recordsPerPage and second value "500" to totalRecords of the parameterized constructor. By default, values are supplied based on the sequence in which the constructor-arg's are defined in a bean definition.
+
+By default, constructor-arg value is of type String specified within double quotes(" "). In case of different constructor argument type, Spring takes care of converting assigned String value to appropriate constructor arguments type if it is Java compatible conversion otherwise throws an exception.
