@@ -104,6 +104,8 @@ public class CustomerEntity {
 -----------------------------------------------------------------------------------------------------------------------------
 
 ------------ ManyToMany Mapping ------------
+Many-to-many relationship is represented by creating a third table called as join table or lookup table (CustomerLoan) which contains a composite primary key which are copies of primary key columns from Customer and Loan tables.
+
 In the ManyToMany mapping, you can use either of the entities as source entity and the remaining as target entity. In the given scenario we are using CustomerEntity as source and LoanEntity as the target.
 
 @Entity
